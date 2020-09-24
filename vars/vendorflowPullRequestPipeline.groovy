@@ -6,10 +6,6 @@ def call(Map parameters = [:]) {
   hudson.tasks.junit.TestResultSummary testResults
   def merged = null
 
-  def artifactory = getArtifactoryServer('ngin-artifactory')
-  def rtMaven = newMavenBuild()
-  def buildInfo = newBuildInfo()
-
   pipeline {
     agent any
 
