@@ -1,0 +1,4 @@
+@NonCPS
+boolean call(Collection<String> labels = GITHUB_PR_LABELS.split(',').toList()) {
+  return labels.contains('ready to merge')
+}
