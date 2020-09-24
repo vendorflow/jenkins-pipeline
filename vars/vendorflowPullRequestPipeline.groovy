@@ -1,7 +1,6 @@
 def call(Map parameters = [:]) {
 
   def problems = []
-  String nextVersion = null
 
   hudson.tasks.junit.TestResultSummary testResults
   def merged = null
@@ -19,7 +18,6 @@ def call(Map parameters = [:]) {
       UPSTREAM_REMOTE = parameters.get('remoteName', 'origin')
       UPSTREAM_BRANCH = parameters.get('trunkBranch', 'master')
 
-      EXISTING_VERSION = mavenGetVersion()
       NEW_VERSION = versionFromMilliAndBuild(currentBuild.timeInMillis, currentBuild.number)
       // can't use this as an enviroment variable
       // https://issues.jenkins-ci.org/browse/JENKINS-50269
@@ -35,7 +33,7 @@ def call(Map parameters = [:]) {
             echo "ff: $ff"
             unstableUnless(ff, "unable to fast-forward this branch onto $UPSTREAM_BRANCH".toString(), problems)
 
-            echo "planned version update: $EXISTING_VERSION -> $NEW_VERSION".toString()
+            echo "planned version update: $NEW_VERSION".toString()
           }
 
           sh 'printenv | sort'
