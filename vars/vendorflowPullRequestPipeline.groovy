@@ -14,7 +14,7 @@ def call(Map parameters = [:]) {
     agent any
 
     tools {
-      maven 'maven3'
+      // maven 'maven3'
       jdk parameters.get('jdk', 'jdk11')
     }
 
