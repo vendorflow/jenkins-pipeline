@@ -112,7 +112,7 @@ def call(Map parameters = [:]) {
 
         echo "problems: $problems"
 
-        vendorflowSlackReport(nextVersion, problems, testResults, merged)
+        vendorflowSlackReport(NEW_VERSION, problems, testResults, merged)
         gitHubPrUpdate(problems)
       }
 
