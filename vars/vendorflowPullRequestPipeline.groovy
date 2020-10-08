@@ -18,6 +18,7 @@ def call(Map parameters = [:]) {
       UPSTREAM_REMOTE = parameters.get('remoteName', 'origin')
       UPSTREAM_BRANCH = parameters.get('trunkBranch', 'master')
 
+      EXISTING_VERSION = mavenGetVersion()
       NEW_VERSION = versionFromMilliAndBuild(currentBuild.timeInMillis, currentBuild.number)
       // can't use this as an enviroment variable
       // https://issues.jenkins-ci.org/browse/JENKINS-50269
