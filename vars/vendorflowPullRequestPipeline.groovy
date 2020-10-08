@@ -54,6 +54,11 @@ def call(Map parameters = [:]) {
         steps {
           sh "./mvnw clean package"
         }
+        post {
+          always {
+            echo "build result: $currentBuild.result".toString()
+          }
+        }
       }
 
 
