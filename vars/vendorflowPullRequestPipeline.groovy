@@ -86,6 +86,12 @@ def call(Map parameters = [:]) {
             steps {
               gitPush()
             }
+
+            post {
+              failure {
+                slackSend color: 'danger', message: 'Error merging ' + gitHubPrSlackLink()
+              }
+            }
           }
 
           stage('Archive jar file(s)') {

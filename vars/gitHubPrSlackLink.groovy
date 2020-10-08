@@ -1,0 +1,4 @@
+@NonCPS
+String call(url = GITHUB_PR_URL, number = GITHUB_PR_NUMBER, title = GITHUB_PR_TITLE) {
+  "<$GITHUB_PR_URL|#$GITHUB_PR_NUMBER $GITHUB_PR_TITLE>"
+}
