@@ -67,7 +67,7 @@ def call(Map parameters = [:]) {
       stage('Publish') {
         when { 
           allOf {
-            expression { readyForMerge() }
+            expression { readyToMerge() }
             expression { currentBuild.resultIsBetterOrEqualTo('SUCCESS') }
           }
         }
@@ -92,7 +92,7 @@ def call(Map parameters = [:]) {
       stage('Deploy') {
         when { 
           allOf {
-            expression { readyForMerge() }
+            expression { readyToMerge() }
             expression { currentBuild.resultIsBetterOrEqualTo('SUCCESS') }
           }
         }
