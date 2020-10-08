@@ -3,7 +3,7 @@ def call(Map parameters = [:]) {
   def problems = []
 
   hudson.tasks.junit.TestResultSummary testResults
-  def merged = null
+  def merging = null
 
   pipeline {
     agent any
@@ -54,34 +54,37 @@ def call(Map parameters = [:]) {
         steps {
           sh "./mvnw clean package"
         }
+
         post {
           always {
-            echo "build result: $currentBuild.result".toString()
+            script {
+              testResults = junit '**/target/surefire-reports/**.xml'
+              if(testResults.failCount) problems << "$testResults.failCount failing test(s)"
+            }
+
+            echo "problems: $problems"
+
+            script { merging = readyToMerge() && currentBuild.resultIsBetterOrEqualTo('SUCCESS') }
+
+            vendorflowSlackReport(NEW_VERSION, problems, testResults, merging)
           }
-        }
-      }
 
-
-      stage('Report') {
-        steps {
-          gitHubPrUpdate(problems)
+          cleanup {
+            gitHubPrUpdate(problems)
+          }
         }
       }
 
 
       stage('Publish') {
         when { 
-          allOf {
-            expression { readyToMerge() }
-            expression { currentBuild.resultIsBetterOrEqualTo('SUCCESS') }
-          }
+          expression { merging }
         }
 
         parallel {
           stage('Close pull request') {
             steps {
               gitPush()
-              script { merged = true }
             }
           }
 
@@ -95,11 +98,8 @@ def call(Map parameters = [:]) {
 
 
       stage('Deploy') {
-        when { 
-          allOf {
-            expression { readyToMerge() }
-            expression { currentBuild.resultIsBetterOrEqualTo('SUCCESS') }
-          }
+        when {
+          expression { merging }
         }
 
         steps {
@@ -108,23 +108,14 @@ def call(Map parameters = [:]) {
       }
     }
 
-
+/*
     post {
       always {
-        script {
-          testResults = junit '**/target/surefire-reports/**.xml'
-          if(testResults.failCount) problems << "$testResults.failCount failing test(s)"
-        }
-
-        echo "problems: $problems"
-
-        vendorflowSlackReport(NEW_VERSION, problems, testResults, merged)
-        gitHubPrUpdate(problems)
       }
 
       success {
-        echo "buildResult: $currentBuild.result"
       }
     }
+*/
   }
 }
