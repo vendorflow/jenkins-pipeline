@@ -26,6 +26,12 @@ def call(Map parameters = [:]) {
     }
 
     stages {
+      stage('Acknowledge') {
+        steps {
+          slackSend message: "Pipeline started for $JOB_NAME $NEW_VERSION"
+        }
+      }
+
       stage('Analyze') {
         steps {
           script {
@@ -120,7 +126,7 @@ def call(Map parameters = [:]) {
           }
 
           failure {
-            slackSend color: 'danger', message: "Deployment of $JOB_NAME $NEW_VERSION failed <@channel>"
+            slackSend color: 'danger', message: "Deployment of $JOB_NAME $NEW_VERSION failed <!channel>"
           }
         }
       }
