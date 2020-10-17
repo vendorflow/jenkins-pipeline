@@ -1,4 +1,3 @@
-@NonCPS
 def call(
     String env,
     String version = NEW_VERSION,
