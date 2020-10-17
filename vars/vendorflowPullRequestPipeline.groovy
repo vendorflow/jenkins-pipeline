@@ -109,7 +109,19 @@ def call(Map parameters = [:]) {
         }
 
         steps {
-          echo 'Would deploy here'
+          ebDeploy 'dev'
+          sh './deploy/acceptanceTest.sh'
+          ebDeploy 'prod'
+        }
+
+        post {
+          success {
+            slackSend color: 'good', message: "Deployment of $JOB_NAME $NEW_VERSION successful"
+          }
+
+          failure {
+            slackSend color: 'danger', message: "Deployment of $JOB_NAME $NEW_VERSION failed <@channel>"
+          }
         }
       }
     }
