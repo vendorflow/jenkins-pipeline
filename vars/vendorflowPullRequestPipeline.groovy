@@ -58,7 +58,7 @@ def call(Map parameters = [:]) {
 
       stage('Build') {
         steps {
-          sh "./mvnw clean package"
+          sh "./mvnw clean verify"
         }
 
         post {
@@ -66,6 +66,7 @@ def call(Map parameters = [:]) {
             script {
               testResults = junit '**/target/surefire-reports/**.xml'
               if(testResults.failCount) problems << "$testResults.failCount failing test(s)"
+              jacoco execPattern: '**/target/jacoco.exec'
             }
 
             echo "problems: $problems"
