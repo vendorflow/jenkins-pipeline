@@ -58,7 +58,9 @@ def call(Map parameters = [:]) {
 
       stage('Build') {
         steps {
-          sh "./mvnw clean verify"
+          withMaven(mavenSettingsConfig: 'vendorflow-ci-settings-xml') {
+            sh "./mvnw clean verify"
+          }
         }
 
         post {
