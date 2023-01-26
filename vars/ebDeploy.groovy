@@ -12,6 +12,6 @@ def call(
       passwordVariable: 'AWS_SECRET_ACCESS_KEY'
   )]) {
     slackSend color: 'good', message: "Deploying $name $version to $env"
-    sh "eb deploy"
+    sh "eb deploy -l $version"
   }
 }
