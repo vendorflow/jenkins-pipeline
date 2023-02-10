@@ -120,6 +120,7 @@ def call(Map parameters = [:]) {
         steps {
           ebDeploy 'dev'
           sh './deploy/acceptanceTest.sh'
+          input('Proceed?')
           ebDeploy 'prod'
         }
 
