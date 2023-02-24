@@ -121,6 +121,7 @@ def call(Map parameters = [:]) {
           ebDeploy 'dev'
           sh './deploy/acceptanceTest.sh'
           input('Proceed?')
+          slackSend message: "Dev Deployment of $JOB_NAME $NEW_VERSION Succeeded. Awaiting prod deployment approval."
           ebDeploy 'prod'
         }
 
