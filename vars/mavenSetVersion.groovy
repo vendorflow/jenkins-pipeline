@@ -1,3 +1,5 @@
 def call(String version, String maven = './mvnw') {
-  sh "$maven versions:set -DnewVersion='${version}' -DgenerateBackupPoms=false"
+  withMaven(mavenSettingsConfig: 'vendorflow-ci-settings-xml') {
+    sh "$maven versions:set -DnewVersion='${version}' -DgenerateBackupPoms=false"
+  }
 }
