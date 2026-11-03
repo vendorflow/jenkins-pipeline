@@ -3,7 +3,7 @@ def call(String message = "CI build ${BUILD_ID}", String author = "${GIT_AUTHOR}
 
   String m = groovy.json.StringEscapeUtils.unescapeJava(message)
 
-  sh """git commit --author='$author' -a -F - <<$HERE
+  sh """git commit --author='$author' -a -F - <<'$HERE'
 $m
 $HERE"""
 }
